@@ -48,7 +48,7 @@ public class CourseBusinessImplTest {
 		//given
 		int filterCount = 1; 
 		
-		//expected
+		//when
 		CourseService courseServiceMock = mock(CourseService.class);		
 		
 		when(courseServiceMock.listAllCourses()).thenReturn(courses);		
@@ -57,7 +57,7 @@ public class CourseBusinessImplTest {
 		
 		List<Course> courses = courseBusinessImpl.filterCourseByName("Spring");
 		
-		//result
+		//then
 		assertEquals(courses.size(), filterCount);
 	}
 
@@ -67,13 +67,13 @@ public class CourseBusinessImplTest {
 		//given
 		int filterCount = 2; 
 		
-		//expected
+		//when
 		CourseServiceImplStub courseServiceImplStub = new CourseServiceImplStub();
 		CourseBusinessImpl courseBusinessImpl = new CourseBusinessImpl(courseServiceImplStub);
 		
 		List<Course> courses = courseBusinessImpl.filterCourseByName("Java");
 		
-		//result
+		//then
 		assertEquals(courses.size(), filterCount);
 	}
 	
