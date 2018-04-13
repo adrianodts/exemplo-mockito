@@ -5,17 +5,38 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.mockito.Mockito;
+import org.mockito.junit.MockitoJUnit;
+import org.mockito.junit.MockitoRule;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import com.adrianodantas.exemplo.mockito.model.Course;
 import com.adrianodantas.exemplo.mockito.service.CourseService;
 
+//@RunWith(MockitoJUnitRunner.class)
+//Changed by @Rule, that is the same thing, and I can use another runners like spring
+//@RunWith(SpringJUnit4ClassRunner.class)
+
 public class CourseBusinessImplTest {
+	
+	@Rule
+	MockitoRule mockitoRule = MockitoJUnit.rule();
+	
+	@Mock
+	CourseService courseServiceMock;
+	
+	@InjectMocks
+	CourseBusinessImpl courseBusinessImpl;
 	
 	private List<Course> courses;
 	
@@ -49,14 +70,42 @@ public class CourseBusinessImplTest {
 	public void filterCourseByNameTest_usingMockito() {
 		//given
 		int filterCount = 1; 
-		
-		//when
 		CourseService courseServiceMock = mock(CourseService.class);		
 		
+		//when
+	
 		when(courseServiceMock.listAllCourses()).thenReturn(courses);		
 		
 		CourseBusinessImpl courseBusinessImpl = new CourseBusinessImpl(courseServiceMock);
 		
+		List<Course> courses = courseBusinessImpl.filterCourseByName("Spring");
+		
+		//then
+		assertEquals(courses.size(), filterCount);
+	}
+	
+	@Test
+	public void filterCourseByNameTest_usingMockAnnotation() {
+		
+		//given
+		int filterCount = 1; 
+		
+		//when		
+		when(courseServiceMock.listAllCourses()).thenReturn(courses);				
+		CourseBusinessImpl courseBusinessImpl = new CourseBusinessImpl(courseServiceMock);
+		List<Course> courses = courseBusinessImpl.filterCourseByName("Spring");
+		
+		//then
+		assertEquals(courses.size(), filterCount);
+	}
+	
+	@Test
+	public void filterCourseByNameTest_usingInjectMocks() {
+		
+		//given
+		int filterCount = 1; 
+		
+		//when		
 		List<Course> courses = courseBusinessImpl.filterCourseByName("Spring");
 		
 		//then
