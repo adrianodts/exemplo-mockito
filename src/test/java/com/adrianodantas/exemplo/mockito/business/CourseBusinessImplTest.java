@@ -2,6 +2,7 @@ package com.adrianodantas.exemplo.mockito.business;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.ArrayList;
@@ -9,6 +10,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mockito;
 
 import com.adrianodantas.exemplo.mockito.model.Course;
 import com.adrianodantas.exemplo.mockito.service.CourseService;
@@ -77,10 +79,45 @@ public class CourseBusinessImplTest {
 		assertEquals(courses.size(), filterCount);
 	}
 	
+	
+	
+	@Test
+	public void deleteCourse() {
+
+		CourseService courseServiceMock = mock(CourseService.class);	
+
+		when(courseServiceMock.listAllCourses()).thenReturn(courses);
+
+		CourseBusinessImpl courseBusinessImpl = new CourseBusinessImpl(courseServiceMock);
+
+		courseBusinessImpl.deleteNotRelated("Java");
+
+		//verify(courseServiceMock).delete("Angular");
+
+		verify(courseServiceMock, Mockito.never()).delete("Java");
+
+		verify(courseServiceMock, Mockito.atLeast(0)).delete("Java");
+
+		//verify(courseServiceMock, Mockito.times(1)).delete("Angular");
+		// atLeastOnce, atLeast
+
+	}
+	
 	public class CourseServiceImplStub implements CourseService{
 		public List<Course> listAllCourses() {
 			return courses;
-		}		
+		}	
+		
+		public void delete(Course course) {
+			courses.remove(course);
+		}
+		
+		public void delete(String name) {
+			for (Course course : courses) {
+				if (!course.getName().contains(name))
+					courses.remove(course);
+			}
+		}
 	}
 	
 }

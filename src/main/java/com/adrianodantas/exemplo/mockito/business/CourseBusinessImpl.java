@@ -28,5 +28,14 @@ public class CourseBusinessImpl {
 		return filteredCourses;
 	}
 	
+	public void deleteNotRelated(String name) {
+		List<Course> allCourses = this.courseService.listAllCourses();
+		for (Course course : allCourses) {
+			if (!course.getName().contains(name)) {
+				this.courseService.delete(course);
+			}
+		}
+	}
+	
 }
  
