@@ -39,8 +39,7 @@ public class CourseBusinessImplTest {
 	CourseBusinessImpl courseBusinessImpl;
 	
 	private List<Course> courses;
-	
-	@SuppressWarnings("serial")
+
 	@Before
 	public void setup() {		
 		courses = new ArrayList<Course>(){{
